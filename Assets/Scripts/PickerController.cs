@@ -14,11 +14,16 @@ public class PickerController : MonoBehaviour
     private Vector3 direction;
     private bool isMoving;
 
+    private Vector3 defaultPosition;
+    private Vector3 cameraDefaultPosition;
+
     private void Awake()
     {
         isMoving = false;
         rigidbody = this.GetComponent<Rigidbody>();
         direction = Vector3.forward;
+        defaultPosition = this.transform.position;
+        cameraDefaultPosition = camera.transform.localPosition;
     }
 
     private void Update()
@@ -27,16 +32,6 @@ public class PickerController : MonoBehaviour
             return;
 
         camera.transform.position = new Vector3(0, 17, camera.transform.position.z);
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            direction.x -= 1;
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            direction.x += 1;
-        }
 
         if (Input.GetMouseButton(0))
         {
@@ -67,12 +62,18 @@ public class PickerController : MonoBehaviour
     public void StopMovingAndForcePoolObjects()
     {
         isMoving = false;
-        pickerPool.GetPool().ForEach(collectableObject => collectableObject.Force());
+        pickerPool.GetPool().ForEach(collectableObject => collectableObject.Force(Vector3.forward, GameManager.OBJECT_FORCE_VALUE));
     }
 
     public void EnableMoving()
     {
         isMoving = true;
         pickerPool.ResetPool();
+    }
+
+    public void ResetPosition()
+    {
+        this.transform.position =  defaultPosition;
+        camera.transform.localPosition = cameraDefaultPosition;
     }
 }

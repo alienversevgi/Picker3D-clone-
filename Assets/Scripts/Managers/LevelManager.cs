@@ -8,57 +8,93 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private PoolManager poolManager;
 
-    private const string LEVEL_PATH = "Level Data/Level-";
+    private const string LEVEL_PATH = "Level Data/";
+
+    private List<LevelData> allLevelData;
+    private LevelData currentLevelData;
     private int levelIndex;
-    private LevelData currentLevel;
-    private List<Platform> platforms;
     private int platformIndex;
 
-    public void Initialize(int levelIndex)
-    {
-        this.levelIndex = levelIndex;
-        platformIndex = 0;
-        levelIndex = 1;
+    [Header("Current Level Objects")]
+    private List<Platform> currentPlatforms;
+    private List<CollectableObjectGroup> currentCollectableObjectGroup;
+    private List<CollectableObject> currentCollectableObjects;
+    private List<Helicopter> currentHelicopters;
 
-        SetupLevel(levelIndex);
+    public void ResetLevel()
+    {
+        platformIndex = 0;
+
+        currentHelicopters.ForEach(element => poolManager.HelicopterPools.Release(element));
+        currentCollectableObjects.ForEach(element => poolManager.GetCollectableObjectPool(element.ObjectType).Release(element));
+        currentPlatforms.ForEach(element => poolManager.PlatformPool.Release(element));
+        currentCollectableObjectGroup.ForEach(element => poolManager.CollectableObjectGroupPool.Release(element));
+
+        currentHelicopters.Clear();
+        currentCollectableObjects.Clear();
+        currentPlatforms.Clear();
+        currentCollectableObjectGroup.Clear();
+    }
+
+    public void Initialize(int levelIndex, List<LevelData> levels)
+    {
+        allLevelData = levels;
+
+        currentPlatforms = new List<Platform>();
+        currentCollectableObjectGroup = new List<CollectableObjectGroup>();
+        currentCollectableObjects = new List<CollectableObject>();
+        currentHelicopters = new List<Helicopter>();
     }
 
     public void SetupLevel(int levelIndex)
     {
         this.levelIndex = levelIndex;
-        currentLevel = Resources.Load<LevelData>(LEVEL_PATH + levelIndex);
-        platforms = new List<Platform>();
+        currentLevelData = allLevelData[levelIndex];
+        currentPlatforms = new List<Platform>();
 
-        foreach (PlatformData platformData in currentLevel.Platforms)
+        foreach (PlatformData platformData in currentLevelData.Platforms)
         {
             Platform platform = poolManager.PlatformPool.Allocate();
             platform.gameObject.SetActive(true);
-            platform.Initialize(platformData, null);
-            platforms.Add(platform);
+            platform.Initialize(platformData);
+            currentPlatforms.Add(platform);
         }
 
-        for (int i = 0; i < currentLevel.ObjectsData.Count; i++)
+        for (int i = 0; i < currentLevelData.ObjectsData.Count; i++)
         {
-            Platform currentPlatform = platforms[currentLevel.ObjectsData[i].PlatformIndex];
-            CollectableObjectGroup collectableObjectGroup = poolManager.CollectableObjectPool.Allocate();
+            Platform currentPlatform = currentPlatforms[currentLevelData.ObjectsData[i].PlatformIndex];
+            CollectableObjectGroup collectableObjectGroup = poolManager.CollectableObjectGroupPool.Allocate();
 
             collectableObjectGroup.gameObject.SetActive(true);
-            collectableObjectGroup.Initialize(currentLevel.ObjectsData[i].Position, currentPlatform.transform);
+            collectableObjectGroup.Initialize(currentLevelData.ObjectsData[i].Position, currentPlatform.transform);
+            currentPlatform.platformElements.Add(collectableObjectGroup);
+            currentCollectableObjectGroup.Add(collectableObjectGroup);
 
-            ApplyPresetToCollectableObject(currentLevel.ObjectsData[i], collectableObjectGroup);
+            if (currentLevelData.ObjectsData[i].PresetData != null)
+                ApplyPresetToCollectableObject(currentLevelData.ObjectsData[i], collectableObjectGroup);
         }
-    }
 
-    public bool GetPlatformTargetScoreSuccessful()
-    {
-        return platforms[platformIndex].CollectableObjectPocket.IsEnoughScoreReached;
-    }
+        for (int i = 0; i < currentLevelData.HelicopterData.Count; i++)
+        {
+            Platform currentPlatform = currentPlatforms[currentLevelData.HelicopterData[i].PlatformIndex];
+            Helicopter helicopter = poolManager.HelicopterPools.Allocate();
+            Pool<CollectableObject> collectableObjectPool = poolManager.GetCollectableObjectPool(currentLevelData.HelicopterData[i].ObjectType);
+            List<CollectableObject> collectableObjects = new List<CollectableObject>();
 
-    public bool HasNextPlatform() => platformIndex < currentLevel.Platforms.Count - 1;
+            foreach (PlatformObjectData objectData in currentLevelData.HelicopterData[i].ObjectData)
+            {
+                CollectableObject collectableObject = collectableObjectPool.Allocate();
+                collectableObject.Initialize(Vector3.zero, ObjectType.Ball, currentPlatform.transform);
+                collectableObjects.Add(collectableObject);
+            }
 
-    public void IncreasePlatformIndex()
-    {
-        platformIndex++;
+            currentPlatform.platformElements.AddRange(collectableObjects);
+            currentCollectableObjects.AddRange(collectableObjects);
+            helicopter.gameObject.SetActive(true);
+            helicopter.Initialize(collectableObjects, currentLevelData.HelicopterData[i], currentPlatform.transform);
+            currentHelicopters.Add(helicopter);
+            currentPlatform.platformElements.Add(helicopter);
+        }
     }
 
     private void ApplyPresetToCollectableObject(PlatformObjectData platformObjectData, CollectableObjectGroup collectableObjectGroup)
@@ -66,9 +102,31 @@ public class LevelManager : MonoBehaviour
         foreach (Vector3 point in platformObjectData.PresetData.Positions)
         {
             Pool<CollectableObject> collectableObjectPool = poolManager.GetCollectableObjectPool(platformObjectData.ObjectType);
-            CollectableObject collectableObject = poolManager.BallPools.Allocate();
+            CollectableObject collectableObject = collectableObjectPool.Allocate();
             collectableObject.gameObject.SetActive(true);
-            collectableObject.Initialize(point, collectableObjectGroup.transform);
+            collectableObject.Initialize(point, platformObjectData.ObjectType, collectableObjectGroup.transform);
+            currentPlatforms[platformIndex].platformElements.Add(collectableObjectGroup);
+            currentPlatforms[platformIndex].platformElements.Add(collectableObject);
+            currentCollectableObjects.Add(collectableObject);
+            currentCollectableObjectGroup.Add(collectableObjectGroup);
         }
+    }
+
+    public void ActivateCurrentLevel()
+    {
+        currentPlatforms[platformIndex].platformElements.ForEach(platformElement => platformElement.Activate());
+    }
+
+    public bool GetPlatformTargetScoreSuccessful()
+    {
+        return currentPlatforms[platformIndex].CollectableObjectPocket.IsEnoughScoreReached;
+    }
+
+    public bool HasNextPlatform() => platformIndex < currentLevelData.Platforms.Count - 1;
+
+    public void RunNextPlatform()
+    {
+        platformIndex++;
+        ActivateCurrentLevel();
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectableObjectGroup : MonoBehaviour, IResettable
+public class CollectableObjectGroup : MonoBehaviour, IResettable, IPlatformElement
 {
     private List<CollectableObject> childObjects;
     private Transform firstParent;
@@ -19,5 +19,9 @@ public class CollectableObjectGroup : MonoBehaviour, IResettable
         this.transform.SetParent(parent);
         childObjects = new List<CollectableObject>();
         this.transform.localPosition = position;
+    }
+
+    public void Activate()
+    {
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public enum ObjectType
 {
     Ball,
     Cube,
-    Pyramid
 }
+
 public enum PresetShapeType
 {
     None,

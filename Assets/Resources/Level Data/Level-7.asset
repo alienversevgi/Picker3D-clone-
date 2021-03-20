@@ -10,33 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0909b99713c0164fad549efae44ccec, type: 3}
-  m_Name: Level-1
+  m_Name: Level-7
   m_EditorClassIdentifier: 
   Platforms:
   - Index: 0
-    EndScore: 1
+    EndScore: 15
     Position: {x: 0, y: 0, z: 0}
   - Index: 0
-    EndScore: 1
+    EndScore: 9
     Position: {x: 0, y: 0, z: 97}
   ObjectsData:
-  - PlatformIndex: 1
+  - PlatformIndex: 0
     PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
     ObjectType: 0
     Position: {x: -2, y: 0.551, z: -4}
-  - PlatformIndex: 1
-    PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
-    ObjectType: 0
-    Position: {x: 4, y: 0.551, z: 2}
-  HelicopterData:
   - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
     ObjectType: 0
-    Position: {x: 0, y: 10, z: -8}
+    Position: {x: 2.4, y: 0.551, z: 1.7}
+  HelicopterData:
+  - PlatformIndex: 1
+    ObjectType: 0
+    Position: {x: 4, y: 10, z: -11}
     PresetData: {fileID: 0}
     ObjectData:
     - PlatformIndex: 0
       PresetData: {fileID: 0}
-      ObjectType: 0
+      ObjectType: 1
+      Position: {x: 0, y: 0, z: 0}
+    - PlatformIndex: 0
+      PresetData: {fileID: 0}
+      ObjectType: 1
       Position: {x: 0, y: 0, z: 0}
     - PlatformIndex: 0
       PresetData: {fileID: 0}
@@ -56,7 +60,7 @@ MonoBehaviour:
       Position: {x: 0, y: 0, z: 0}
     - PlatformIndex: 0
       PresetData: {fileID: 0}
-      ObjectType: 0
+      ObjectType: 1
       Position: {x: 0, y: 0, z: 0}
     - PlatformIndex: 0
       PresetData: {fileID: 0}
@@ -64,11 +68,7 @@ MonoBehaviour:
       Position: {x: 0, y: 0, z: 0}
     - PlatformIndex: 0
       PresetData: {fileID: 0}
-      ObjectType: 0
-      Position: {x: 0, y: 0, z: 0}
-    - PlatformIndex: 0
-      PresetData: {fileID: 0}
-      ObjectType: 0
+      ObjectType: 1
       Position: {x: 0, y: 0, z: 0}
     - PlatformIndex: 0
       PresetData: {fileID: 0}

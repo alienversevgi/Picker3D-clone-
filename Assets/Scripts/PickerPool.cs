@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PickerPool : MonoBehaviour
 {
-    [SerializeField] private float force;
     private List<CollectableObject> poolOfCollectableObject;
-
     public List<CollectableObject> GetPool() => poolOfCollectableObject;
 
     private void Awake()
@@ -23,7 +21,7 @@ public class PickerPool : MonoBehaviour
     {
         CollectableObject collectableObject = collider.GetComponent<CollectableObject>();
 
-        if (collectableObject != null)
+        if (collectableObject != null )
         {
             poolOfCollectableObject.Add(collectableObject);
         }
@@ -33,7 +31,7 @@ public class PickerPool : MonoBehaviour
     {
         CollectableObject collectableObject = collider.GetComponent<CollectableObject>();
 
-        if (collectableObject != null)
+        if (collectableObject != null )
         {
             poolOfCollectableObject.Remove(collectableObject);
         }

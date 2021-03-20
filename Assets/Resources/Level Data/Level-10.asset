@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0909b99713c0164fad549efae44ccec, type: 3}
+  m_Name: Level-10
+  m_EditorClassIdentifier: 
+  Platforms:
+  - Index: 0
+    EndScore: 19
+    Position: {x: 0, y: 0, z: 0}
+  - Index: 0
+    EndScore: 9
+    Position: {x: 0, y: 0, z: 97}
+  ObjectsData:
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 1
+    Position: {x: -2, y: 0.551, z: -4}
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 1
+    Position: {x: 1.01, y: 0.551, z: 1.7}
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 1
+    Position: {x: 2.99, y: 0.551, z: -5.84}
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 1
+    Position: {x: 2.99, y: 0.551, z: -6.86}
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 1
+    Position: {x: -1.46, y: 0.551, z: -7.51}
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 1
+    Position: {x: -3.4, y: 0.551, z: 10.73}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
+    ObjectType: 0
+    Position: {x: 0, y: 0.551, z: 10.73}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: a48f2f1cbabaf5a4d93782ac188a4205, type: 2}
+    ObjectType: 0
+    Position: {x: -3.4, y: 0.551, z: -5.25}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: a48f2f1cbabaf5a4d93782ac188a4205, type: 2}
+    ObjectType: 0
+    Position: {x: 1.22, y: 0.551, z: 2.59}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+    ObjectType: 0
+    Position: {x: -1.58, y: 0.551, z: -2.52}
+  HelicopterData: []

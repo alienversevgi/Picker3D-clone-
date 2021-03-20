@@ -10,17 +10,38 @@ public class CollectableObjectPocket : MonoBehaviour
     [SerializeField] private Transform platform;
     [SerializeField] private Transform leftBarrier;
     [SerializeField] private Transform rightBarrier;
+    [SerializeField] private GameObject checkpoint;
 
     private int currentScore;
     private int endScore;
 
     public bool IsEnoughScoreReached => currentScore >= endScore;
 
+    private Vector3 defaultPlatformPosition;
+    private Vector3 defaultLeftBarrierRotation;
+    private Vector3 defaultRightBarrierRotation;
+
+    public void ResetSetup()
+    {
+        checkpoint.gameObject.SetActive(true);
+        platform.gameObject.SetActive(false);
+        leftBarrier.localEulerAngles = defaultLeftBarrierRotation;
+        rightBarrier.localEulerAngles = defaultRightBarrierRotation;
+
+        platform.localPosition = defaultPlatformPosition;
+    }
+
     public void Initialize(int endScore)
     {
         this.currentScore = 0;
         this.endScore = endScore;
         countedObjectText.text = $"{currentScore} / {endScore}";
+
+        defaultLeftBarrierRotation = leftBarrier.localEulerAngles;
+        defaultRightBarrierRotation = rightBarrier.localEulerAngles;
+
+        defaultPlatformPosition = platform.localPosition;
+
         GameEventManager.Instance.OnReachedToCheckPoint.Register(() => StartCoroutine(WaitAndCallAction(1f, () => CheckScore())));
         GameEventManager.Instance.OnSuccesfulyPlatformCleared.Register(() => ShowPocketAnimation());
     }
@@ -37,6 +58,7 @@ public class CollectableObjectPocket : MonoBehaviour
 
         if (collectableObject != null)
         {
+            collectableObject.Reset();
             AddScore();
         }
     }

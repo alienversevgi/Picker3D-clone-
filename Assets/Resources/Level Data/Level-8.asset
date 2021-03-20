@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0909b99713c0164fad549efae44ccec, type: 3}
+  m_Name: Level-8
+  m_EditorClassIdentifier: 
+  Platforms:
+  - Index: 0
+    EndScore: 13
+    Position: {x: 0, y: 0, z: 0}
+  - Index: 0
+    EndScore: 9
+    Position: {x: 0, y: 0, z: 97}
+  ObjectsData:
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: a48f2f1cbabaf5a4d93782ac188a4205, type: 2}
+    ObjectType: 1
+    Position: {x: -2, y: 0.551, z: -4}
+  - PlatformIndex: 0
+    PresetData: {fileID: 11400000, guid: a48f2f1cbabaf5a4d93782ac188a4205, type: 2}
+    ObjectType: 0
+    Position: {x: 1.01, y: 0.551, z: 1.7}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: a48f2f1cbabaf5a4d93782ac188a4205, type: 2}
+    ObjectType: 0
+    Position: {x: 1.01, y: 0.551, z: 1.7}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
+    ObjectType: 1
+    Position: {x: 1.01, y: 0.551, z: 1.7}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
+    ObjectType: 0
+    Position: {x: 0, y: 0.551, z: 6}
+  - PlatformIndex: 1
+    PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
+    ObjectType: 0
+    Position: {x: -3, y: 0.551, z: -10}
+  HelicopterData: []

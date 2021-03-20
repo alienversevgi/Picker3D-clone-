@@ -10,22 +10,28 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button NextLevelButton;
     [SerializeField] private Button RestartLevelButton;
     [SerializeField] private Text CurrentLevelText;
-    [SerializeField] private Text NextLevelText;
     [SerializeField] private Text TabToPlayText;
+
     private Action nextLevelAction;
+    private Action restartAction;
+    private bool isFirstInputDetected;
+
+    public event Action onFirstInputDetected;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!isFirstInputDetected && Input.GetMouseButtonDown(0))
         {
+            isFirstInputDetected = true;
             TabToPlayText.gameObject.SetActive(false);
-            GameManager.Instance.StartGame();
+            onFirstInputDetected?.Invoke();
         }
     }
 
-    public void Initialize(Action nextLevelAction)
+    public void Initialize(Action nextLevelAction, Action restartAction)
     {
         this.nextLevelAction = nextLevelAction;
+        this.restartAction = restartAction;
     }
 
     public void ShowRestartButton()
@@ -40,17 +46,20 @@ public class UIManager : MonoBehaviour
 
     public void SetupLevelInfo(int currentLevel)
     {
-        CurrentLevelText.text = currentLevel.ToString();
-        NextLevelText.text = (currentLevel + 1).ToString();
+        TabToPlayText.gameObject.SetActive(true);
+        isFirstInputDetected = false;
+        CurrentLevelText.text = (currentLevel + 1).ToString();
     }
 
     public void OnRestartButtonClicked()
     {
-        SceneManager.LoadScene(0);
+        RestartLevelButton.gameObject.SetActive(false);
+        restartAction();
     }
 
     public void OnNextLevelButtonClicked()
     {
+        NextLevelButton.gameObject.SetActive(false);
         nextLevelAction();
     }
 }
