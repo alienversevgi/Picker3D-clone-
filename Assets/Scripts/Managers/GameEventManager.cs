@@ -32,4 +32,5 @@ public class GameEventManager : MonoBehaviour
     public GameEvent OnSuccesfulyPlatformCleared; //Checkpointe ulaştım ama animsyon oynamadı
     public GameEvent OnPlatformAnimationFinished;
     public GameEvent OnPlatformFinished;
+    public GameEvent OnFirstInputDetected;
 }

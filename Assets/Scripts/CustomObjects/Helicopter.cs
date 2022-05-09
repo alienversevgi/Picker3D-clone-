@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using DG.Tweening.Plugins.Core.PathCore;
 
 public enum ObjectSpawnType
 {
@@ -11,12 +12,11 @@ public enum ObjectSpawnType
 
 public class Helicopter : MonoBehaviour, IResettable, IPlatformElement
 {
-    [SerializeField] private Transform spawnPoint;
-
     private List<CollectableObject> collectableObjects;
     private CustomObjectData customObjectData;
     private Transform firstParent;
-    private bool isMoving;
+    private List<Vector3> curvePoints;
+    private float duration;
 
     public void Initialize(List<CollectableObject> collectableObjects, CustomObjectData customObjectData, Transform parent)
     {
@@ -25,23 +25,16 @@ public class Helicopter : MonoBehaviour, IResettable, IPlatformElement
         this.transform.localPosition = customObjectData.Position;
         this.customObjectData = customObjectData;
         this.collectableObjects = collectableObjects;
+        this.curvePoints = customObjectData.CurvePoints;
+        this.duration = customObjectData.Duration;
 
         collectableObjects.ForEach(element => element.Initialize(this.transform.localPosition, customObjectData.ObjectType, this.transform.parent));
     }
 
-    private void Update()
-    {
-        if (isMoving && this.transform.localPosition.z < customObjectData.endPositionZ)
-        {
-            Vector3 newPosition =
-                new Vector3(customObjectData.xAxisMovement.Evaluate(Time.time), customObjectData.yAxisMovement.Evaluate(Time.time), customObjectData.zAxisMovement.Evaluate(Time.time));
-            this.transform.position +=  (customObjectData.MovementSpeed *  newPosition * Time.deltaTime);
-        }
-    }
-
     public void Activate()
     {
-        isMoving = true;
+        Path path = new Path(PathType.Linear, curvePoints.ToArray(), 1);
+        this.transform.DOLocalPath(path, duration, PathMode.Full3D);
         StartCoroutine(OverTimeCoroutine());
     }
 
@@ -60,6 +53,5 @@ public class Helicopter : MonoBehaviour, IResettable, IPlatformElement
     {
         this.transform.SetParent(firstParent);
         this.gameObject.SetActive(false);
-        isMoving = false;
     }
 }

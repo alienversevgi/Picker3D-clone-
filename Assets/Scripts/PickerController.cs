@@ -32,6 +32,12 @@ public class PickerController : MonoBehaviour
             return;
 
         camera.transform.position = new Vector3(0, 17, camera.transform.position.z);
+    }
+
+    private void FixedUpdate()
+    {
+        if (!isMoving)
+            return;
 
         if (Input.GetMouseButton(0))
         {
@@ -73,7 +79,7 @@ public class PickerController : MonoBehaviour
 
     public void ResetPosition()
     {
-        this.transform.position =  defaultPosition;
+        this.transform.position = defaultPosition;
         camera.transform.localPosition = cameraDefaultPosition;
     }
 }

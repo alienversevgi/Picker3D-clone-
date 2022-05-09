@@ -77,41 +77,10 @@ MonoBehaviour:
     objectSpawnType: 1
     ObjectSpawnTime: 0.2
     IsMoveableObject: 1
-    MovementSpeed: 25
-    endPositionZ: 10
-    xAxisMovement:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    yAxisMovement:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    zAxisMovement:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
+    Duration: 5
+    CurvePoints:
+    - {x: -4, y: 10, z: -10}
+    - {x: 0, y: 2, z: 0}
+    - {x: 4, y: 13, z: 5}
+    - {x: -2, y: 5, z: 8}
+    - {x: -3, y: 20, z: 10}
