@@ -17,7 +17,7 @@ MonoBehaviour:
     EndScore: 12
     Position: {x: 0, y: 0, z: 0}
   - Index: 0
-    EndScore: 10
+    EndScore: 9
     Position: {x: 0, y: 0, z: 97}
   ObjectsData:
   - PlatformIndex: 0

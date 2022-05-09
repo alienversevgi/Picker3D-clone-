@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0909b99713c0164fad549efae44ccec, type: 3}
   m_Name: Level-2
   m_EditorClassIdentifier: 
-  Index: 1
   Platforms:
   - Index: 0
     EndScore: 1
@@ -67,56 +66,12 @@ MonoBehaviour:
       PresetData: {fileID: 0}
       ObjectType: 0
       Position: {x: 0, y: 0, z: 0}
-    - PlatformIndex: 0
-      PresetData: {fileID: 0}
-      ObjectType: 0
-      Position: {x: 0, y: 0, z: 0}
-    - PlatformIndex: 0
-      PresetData: {fileID: 0}
-      ObjectType: 0
-      Position: {x: 0, y: 0, z: 0}
-    - PlatformIndex: 0
-      PresetData: {fileID: 0}
-      ObjectType: 0
-      Position: {x: 0, y: 0, z: 0}
     objectSpawnType: 1
-    ObjectSpawnTime: 1
+    ObjectSpawnTime: 0.25
     IsMoveableObject: 1
-    MovementSpeed: 4
-    endZPosition: 0
-    xAxisMovement:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    yAxisMovement:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 0
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    zAxisMovement:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
+    Duration: 2.3
+    CurvePoints:
+    - {x: 0, y: 10, z: 0}
+    - {x: -6, y: 10, z: 2.5}
+    - {x: 6, y: 10, z: 7}
+    - {x: 0, y: 10, z: 10}
