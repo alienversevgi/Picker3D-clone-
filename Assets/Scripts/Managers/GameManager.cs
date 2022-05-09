@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,15 +8,35 @@ public class GameManager : MonoBehaviour
 {
     public const float OBJECT_FORCE_VALUE = 5000;
 
-    [SerializeField] private GameData gameData;
-
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private PoolManager poolManager;
     [SerializeField] private PickerController pickerController;
     [SerializeField] private UIManager uiManager;
-    private event Action onReachedToCheckPoint;
+    [SerializeField] private List<LevelData> levels;
 
-    private int levelIndex = 1;
+    private int currentLevelIndex 
+    {
+        get 
+        {
+            return PlayerPrefs.GetInt("CURRENT_LEVEL_INDEX", 1);
+        }
+        set 
+        {
+            PlayerPrefs.SetInt("CURRENT_LEVEL_INDEX", value);
+        }
+    } 
+
+    private bool areAllLevelCompleted 
+    {
+        get 
+        {
+            return PlayerPrefs.GetInt("Are_All_Level_Completed", 0) == 1 ? true : false;
+        }
+        set 
+        {
+            PlayerPrefs.SetInt("Are_All_Level_Completed", value == true ? 1 : 0);
+        }
+    }
 
     private void Start()
     {
@@ -31,39 +51,22 @@ public class GameManager : MonoBehaviour
 
     public void Initialize()
     {
-        if (gameData.AreAllLevelCompleted)
-        {
-            levelIndex = Random.Range(0, gameData.Levels.Count );
-            gameData.CurrentLevelIndex = levelIndex;
-        }
-        else
-        {
-            levelIndex = gameData.CurrentLevelIndex;
-        }
+        if (areAllLevelCompleted)
+            currentLevelIndex = Random.Range(0, levels.Count);
 
         GameEventManager.Instance.OnReachedToCheckPoint.Register(() => OnReachedToCheckPoint());
+        GameEventManager.Instance.OnFirstInputDetected.Register(() => StartGame());
         poolManager.Initialize();
         uiManager.Initialize(() => NextLevel(), () => ResetLevel());
-        uiManager.SetupLevelInfo(levelIndex);
-        levelManager.Initialize(levelIndex, gameData.Levels);
-        levelManager.SetupLevel(levelIndex);
-        uiManager.onFirstInputDetected += UiManager_onFirstInputDetected;
-    }
-
-    private void UiManager_onFirstInputDetected()
-    {
-        StartGame();
+        uiManager.SetupLevelInfo(currentLevelIndex);
+        levelManager.Initialize(currentLevelIndex, levels);
+        levelManager.SetupLevel(currentLevelIndex);
     }
 
     private void OnReachedToCheckPoint()
     {
         pickerController.StopMovingAndForcePoolObjects();
         StartCoroutine(WaitAndCallAction(3.0f, () => CheckLevel()));
-    }
-
-    public void ReachedToCheckPoint()
-    {
-        onReachedToCheckPoint?.Invoke();
     }
 
     private void CheckLevel()
@@ -85,7 +88,6 @@ public class GameManager : MonoBehaviour
             GameOver();
         }
     }
-
     private void GameOver()
     {
         uiManager.ShowRestartButton();
@@ -93,17 +95,15 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
-        levelIndex++;
-        gameData.CurrentLevelIndex = levelIndex;
+        currentLevelIndex++;
 
-        if (gameData.AreAllLevelCompleted)
+        if (areAllLevelCompleted)
         {
-            levelIndex = Random.Range(0, gameData.Levels.Count);
-            gameData.CurrentLevelIndex = levelIndex;
+            currentLevelIndex = Random.Range(0, levels.Count);
         }
-        else if (gameData.CurrentLevelIndex == gameData.Levels.Count - 1)
+        else if (currentLevelIndex == levels.Count - 1)
         {
-            gameData.AreAllLevelCompleted = true;
+            areAllLevelCompleted = true;
         }
 
         ResetLevel();
@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         levelManager.ResetLevel();
-        uiManager.SetupLevelInfo(levelIndex);
-        levelManager.SetupLevel(levelIndex);
+        uiManager.SetupLevelInfo(currentLevelIndex);
+        levelManager.SetupLevel(currentLevelIndex);
         pickerController.ResetPosition();
     }
 

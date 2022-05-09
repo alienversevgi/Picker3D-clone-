@@ -13,10 +13,7 @@ public class CustomObjectData
     public ObjectSpawnType objectSpawnType;
     public float ObjectSpawnTime;
     public bool IsMoveableObject;
-    public float MovementSpeed;
-    public float endPositionZ;
+    public float Duration;
 
-    [SerializeField] public AnimationCurve xAxisMovement;
-    [SerializeField] public AnimationCurve yAxisMovement;
-    [SerializeField] public AnimationCurve zAxisMovement;
+    public List<Vector3> CurvePoints;
 }

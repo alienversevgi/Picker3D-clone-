@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("UI Elements")]
     [SerializeField] private Button NextLevelButton;
     [SerializeField] private Button RestartLevelButton;
     [SerializeField] private Text CurrentLevelText;
@@ -16,15 +17,19 @@ public class UIManager : MonoBehaviour
     private Action restartAction;
     private bool isFirstInputDetected;
 
-    public event Action onFirstInputDetected;
-
     private void Update()
     {
+
+        float current = 0;
+        current = Time.frameCount / Time.time;
+        int avgFrameRate = (int)current;
+        CurrentLevelText.text = avgFrameRate.ToString() + " FPS";
+
         if (!isFirstInputDetected && Input.GetMouseButtonDown(0))
         {
             isFirstInputDetected = true;
             TabToPlayText.gameObject.SetActive(false);
-            onFirstInputDetected?.Invoke();
+            GameEventManager.Instance.OnFirstInputDetected.Raise();
         }
     }
 
