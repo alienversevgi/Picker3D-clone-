@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using TMPro;
 
 public class CollectableObjectPocket : MonoBehaviour
 {
-    [SerializeField] private TextMesh countedObjectText;
+    [SerializeField] private TextMeshPro countedObjectText;
     [SerializeField] private Transform platform;
     [SerializeField] private Transform leftBarrier;
     [SerializeField] private Transform rightBarrier;
