@@ -17,6 +17,7 @@ namespace Game.Editor
         #region Fields
 
         public const string PREFAB_PATH = "Assets/Prefabs/";
+        private static EditorWindow window;
         private LevelData levelData;
         private int levelIndex;
         private bool isLoadedLevel;
@@ -31,6 +32,7 @@ namespace Game.Editor
         private Dictionary<int, List<Transform>> helicopterObjects;
         private List<PresetData> presets;
 
+        private int helicopterObjectCount;
         private float helicopterSpawnRate;
         private float helicopterDuration;
         private ObjectSpawnType helicopterObjectSpawnType;
@@ -42,11 +44,11 @@ namespace Game.Editor
         private ObjectType selectedObjectType;
         private List<Vector3> curvePoints;
 
-        private string openCloseObjectButtonText;
         private bool isOpenAddObjectGroup;
-
-        private string openCloseHelicopterButtonText;
         private bool isOpenAddHelicopterGroup;
+        private bool isOpenEditHelicopterGroup;
+
+        private CustomObjectData selectedHelicopterData;
 
         #region Prefabs
 
@@ -106,8 +108,7 @@ namespace Game.Editor
 
             GUILayout.Space(10);
 
-            openCloseObjectButtonText = isOpenAddObjectGroup ? "Close Add Object Panel" : "Open Add Object Panel";
-            if (GUILayout.Button(openCloseObjectButtonText))
+            if (GUILayout.Button(isOpenAddObjectGroup ? "Close Add Object Panel" : "Open Add Object Panel"))
             {
                 isOpenAddObjectGroup = !isOpenAddObjectGroup;
             }
@@ -133,8 +134,7 @@ namespace Game.Editor
 
             #region Helicopter
 
-            openCloseHelicopterButtonText = isOpenAddHelicopterGroup ? "Close Add Helicopter Panel" : "Open Add Helicopter Panel";
-            if (GUILayout.Button(openCloseHelicopterButtonText))
+            if (GUILayout.Button(isOpenAddHelicopterGroup ? "Close Add Helicopter Panel" : "Open Add Helicopter Panel"))
             {
                 isOpenAddHelicopterGroup = !isOpenAddHelicopterGroup;
             }
@@ -144,6 +144,7 @@ namespace Game.Editor
             if (EditorGUILayout.BeginFadeGroup(isOpenAddHelicopterGroup ? 1 : 0))
             {
                 helicopterObjectType = (ObjectType)EditorGUILayout.EnumPopup("Object Type : ", helicopterObjectType);
+                helicopterObjectCount = EditorGUILayout.IntField("Spawn Object Count : ", helicopterObjectCount);
                 helicopterSpawnRate = EditorGUILayout.FloatField("Spawn Rate : ", helicopterSpawnRate);
                 helicopterDuration = EditorGUILayout.FloatField("All Animation Duration : ", helicopterDuration);
                 helicopterObjectSpawnType = (ObjectSpawnType)EditorGUILayout.EnumPopup("Object Spawn Type : ", helicopterObjectSpawnType);
@@ -159,6 +160,42 @@ namespace Game.Editor
                 {
                     AddHelicopter(null);
                     isOpenAddHelicopterGroup = false;
+                }
+            }
+
+            EditorGUILayout.EndFadeGroup();
+
+            if (GUILayout.Button(isOpenEditHelicopterGroup ? "Disable Edit Helicopter" : "Enable Edit Helicopter"))
+            {
+                isOpenEditHelicopterGroup = !isOpenEditHelicopterGroup;
+            }
+
+            if (EditorGUILayout.BeginFadeGroup(isOpenEditHelicopterGroup ? 1 : 0))
+            {
+                selectedHelicopterData.ObjectType = (ObjectType)EditorGUILayout.EnumPopup("Object Type : ", selectedHelicopterData.ObjectType);
+                selectedHelicopterData.SpawnObjectCount = EditorGUILayout.IntField("Spawn Object Count : ", selectedHelicopterData.SpawnObjectCount);
+                selectedHelicopterData.ObjectSpawnTime = EditorGUILayout.FloatField("Spawn Rate : ", selectedHelicopterData.ObjectSpawnTime);
+                selectedHelicopterData.Duration = EditorGUILayout.FloatField("All Animation Duration : ", selectedHelicopterData.Duration);
+                selectedHelicopterData.ObjectSpawnType = (ObjectSpawnType)EditorGUILayout.EnumPopup("Object Spawn Type : ", selectedHelicopterData.ObjectSpawnType);
+
+                GUILayout.Space(5);
+                SceneView.RepaintAll();
+                curvePoints[0] = EditorGUILayout.Vector3Field("point 0 ", curvePoints[0]);
+                curvePoints[1] = EditorGUILayout.Vector3Field("point 1 ", curvePoints[1]);
+                curvePoints[2] = EditorGUILayout.Vector3Field("point 2 ", curvePoints[2]);
+                curvePoints[3] = EditorGUILayout.Vector3Field("point 3 ", curvePoints[3]);
+
+                selectedHelicopterData.Position = curvePoints[0];
+                selectedHelicopterData.CurvePoints = new List<Vector3>()
+                {
+                    curvePoints[3],
+                    curvePoints[1],
+                    curvePoints[2]
+                };
+
+                if (GUILayout.Button("Confirm Edit"))
+                {
+                    isOpenEditHelicopterGroup = false;
                 }
             }
 
@@ -209,17 +246,15 @@ namespace Game.Editor
                 {
                     int platformIndex = platforms.IndexOf(Selection.activeGameObject.transform.parent);
                     int helicopterIndex = helicopterObjects[platformIndex].IndexOf(Selection.activeGameObject.transform);
-                    CustomObjectData helicopterData = levelData.Platforms[0].HelicopterData[0];
+                    selectedHelicopterData = levelData.Platforms[platformIndex].HelicopterData[helicopterIndex];
 
                     curvePoints = new List<Vector3>()
                     {
-                        helicopterData.Position,
-                        helicopterData.CurvePoints[1],
-                        helicopterData.CurvePoints[2],
-                        helicopterData.CurvePoints[0]
+                        selectedHelicopterData.Position,
+                        selectedHelicopterData.CurvePoints[1],
+                        selectedHelicopterData.CurvePoints[2],
+                        selectedHelicopterData.CurvePoints[0]
                     };
-
-
                 }
                 Repaint();
             }
@@ -229,11 +264,13 @@ namespace Game.Editor
 
         #region Private Methods
 
-        [MenuItem("LevelEditor/New Level")]
+        [MenuItem("LevelEditor/Show")]
         private static void ShowWindow()
         {
-            EditorWindow window = GetWindow(typeof(LevelEditorWindow));
+            window = GetWindow(typeof(LevelEditorWindow));
             window.minSize = new Vector2(350, 600);
+            window.titleContent.text = "Level Editor";
+
             if (SceneManager.GetActiveScene().name != "LevelEditor")
             {
                 Debug.LogError("Please open LevelEditor scene!");
@@ -276,7 +313,7 @@ namespace Game.Editor
 
         private void CreateScriptableObject()
         {
-            string path = $"Assets/Resources/Level Data/Level-{levelIndex}.asset";
+            string path = $"Assets/Resources/Level Data/Level_{levelIndex}.asset";
             AssetDatabase.CreateAsset(levelData, path);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -292,7 +329,7 @@ namespace Game.Editor
                 {
                     for (int j = 0; j < levelData.Platforms[i].ObjectsData.Count; j++)
                     {
-                        levelData.Platforms[i].ObjectsData[j].Position = platformObjects[i][j].position;
+                        levelData.Platforms[i].ObjectsData[j].Position = platformObjects[i][j].localPosition;
                         levelData.Platforms[i].ObjectsData[j].Rotation = platformObjects[i][j].eulerAngles;
                     }
                 }
@@ -308,13 +345,17 @@ namespace Game.Editor
                 CreateScriptableObject();
             }
 
+            levelData.Index = levelIndex;
             Debug.Log("Level Saved!");
+            window.Close();
         }
 
         private void LoadData()
         {
-            string levelPath = $"Level Data/Level-{levelIndex}";
+            string levelPath = $"Level Data/Level_{levelIndex}";
             levelData = Resources.Load<LevelData>(levelPath);
+            EditorUtility.SetDirty(levelData);
+
             if (levelData != null)
             {
                 isLoadedLevel = true;
@@ -383,7 +424,6 @@ namespace Game.Editor
                 levelData.Platforms[selectedPlatformIndex].ObjectsData = new List<PlatformObjectData>();
 
             GameObject instantiatedObjectGroup = PrefabUtility.InstantiatePrefab(collectableObjectGroupPrefab) as GameObject;
-
             if (platformObjectData == null)
             {
                 platformObjectData = new PlatformObjectData()
@@ -397,6 +437,8 @@ namespace Game.Editor
                 levelData.Platforms[selectedPlatformIndex].ObjectsData.Add(platformObjectData);
             }
 
+            selectedObjectType = platformObjectData.ObjectType;
+            selectedPresetIndex = presets.IndexOf(platformObjectData.PresetData);
             ApplyPreset(instantiatedObjectGroup.transform);
 
             instantiatedObjectGroup.transform.SetParent(platforms[selectedPlatformIndex].transform);
@@ -427,6 +469,7 @@ namespace Game.Editor
                     Position = curvePoints[0],
                     ObjectSpawnType = helicopterObjectSpawnType,
                     ObjectSpawnTime = helicopterSpawnRate,
+                    SpawnObjectCount = helicopterObjectCount,
                     Duration = helicopterDuration,
                     CurvePoints = new List<Vector3>()
                     {
@@ -512,7 +555,7 @@ namespace Game.Editor
 
         private void SceneView_duringSceneGui(SceneView obj)
         {
-            if (isOpenAddHelicopterGroup)
+            if (isOpenAddHelicopterGroup || isOpenEditHelicopterGroup)
             {
                 Handles.DrawBezier(curvePoints[0], curvePoints[3], curvePoints[1], curvePoints[2], Color.red, null, 25);
                 curvePoints[0] = Handles.FreeMoveHandle(curvePoints[0], Quaternion.identity, .1f, Vector3.zero, Handles.DotHandleCap);

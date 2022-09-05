@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0909b99713c0164fad549efae44ccec, type: 3}
+  m_Name: Level_7
+  m_EditorClassIdentifier: 
+  Index: 7
+  Platforms:
+  - Index: 0
+    EndScore: 28
+    Position: {x: 0, y: 0, z: 0}
+    ObjectsData:
+    - PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
+      ObjectType: 0
+      Position: {x: -2.91, y: 2, z: -17.03}
+      Rotation: {x: 334.35242, y: 23.933907, z: 0.0000009470871}
+    - PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
+      ObjectType: 0
+      Position: {x: 1.47, y: 4.5, z: -4.42}
+      Rotation: {x: 336.81915, y: 318.80927, z: 11.553617}
+    - PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
+      ObjectType: 0
+      Position: {x: -2.32, y: 5, z: 14.05}
+      Rotation: {x: 339.43124, y: 39.66435, z: 0.00000091190657}
+    - PresetData: {fileID: 11400000, guid: 87d0ec7f21a15b24296f8b8effd7046f, type: 2}
+      ObjectType: 0
+      Position: {x: 2.5, y: 5.5, z: 27.7}
+      Rotation: {x: 332.11215, y: 318.91675, z: -0.0000009659549}
+    HelicopterData: []
+  - Index: 0
+    EndScore: 9
+    Position: {x: 0, y: 0, z: 97}
+    ObjectsData:
+    - PresetData: {fileID: 11400000, guid: 4903b35c08b6a384090ddc1934a3b74e, type: 2}
+      ObjectType: 0
+      Position: {x: 0, y: 2.95, z: 0}
+      Rotation: {x: -0, y: 0, z: 0}
+    - PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+      ObjectType: 1
+      Position: {x: 1.63, y: 2.09, z: 14.16}
+      Rotation: {x: 2.3237276, y: 342.65106, z: 17.196335}
+    HelicopterData: []
