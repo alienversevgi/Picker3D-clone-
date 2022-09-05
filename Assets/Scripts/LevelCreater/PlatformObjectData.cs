@@ -2,26 +2,29 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum ObjectType
+namespace Game.Data
 {
-    Ball,
-    Cube,
-}
+    public enum ObjectType
+    {
+        Ball,
+        Cube,
+    }
 
-public enum PresetShapeType
-{
-    None,
-    Rectangle,
-    SlashLine,
-    Line,
-    Cross
-}
+    public enum PresetShapeType
+    {
+        None,
+        Rectangle,
+        SlashLine,
+        Line,
+        Cross
+    }
 
-[Serializable]
-public class PlatformObjectData
-{
-    public PresetData PresetData;
-    public ObjectType ObjectType;
-    public Vector3 Position;
-    public Vector3 Rotation;
+    [Serializable]
+    public class PlatformObjectData
+    {
+        public PresetData PresetData;
+        public ObjectType ObjectType;
+        public Vector3 Position;
+        public Vector3 Rotation;
+    }
 }

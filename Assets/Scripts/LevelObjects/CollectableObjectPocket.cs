@@ -5,90 +5,110 @@ using DG.Tweening;
 using System;
 using TMPro;
 
-public class CollectableObjectPocket : MonoBehaviour
+namespace Game.Level
 {
-    [SerializeField] private TextMeshPro countedObjectText;
-    [SerializeField] private Transform platform;
-    [SerializeField] private Transform leftBarrier;
-    [SerializeField] private Transform rightBarrier;
-    [SerializeField] private GameObject checkpoint;
-
-    private int currentScore;
-    private int endScore;
-
-    public bool IsEnoughScoreReached => currentScore >= endScore;
-
-    private Vector3 defaultPlatformPosition;
-    private Vector3 defaultLeftBarrierRotation;
-    private Vector3 defaultRightBarrierRotation;
-
-    public void ResetSetup()
+    public class CollectableObjectPocket : MonoBehaviour
     {
-        checkpoint.gameObject.SetActive(true);
-        platform.gameObject.SetActive(false);
-        leftBarrier.localEulerAngles = defaultLeftBarrierRotation;
-        rightBarrier.localEulerAngles = defaultRightBarrierRotation;
+        #region Fields
 
-        platform.localPosition = defaultPlatformPosition;
-    }
+        [SerializeField] private TextMeshPro countedObjectText;
+        [SerializeField] private Transform platform;
+        [SerializeField] private Transform leftBarrier;
+        [SerializeField] private Transform rightBarrier;
+        [SerializeField] private GameObject checkpoint;
 
-    public void Initialize(int endScore)
-    {
-        this.currentScore = 0;
-        this.endScore = endScore;
-        countedObjectText.text = $"{currentScore} / {endScore}";
+        public bool IsEnoughScoreReached => currentScore >= endScore;
 
-        defaultLeftBarrierRotation = leftBarrier.localEulerAngles;
-        defaultRightBarrierRotation = rightBarrier.localEulerAngles;
+        private int currentScore;
+        private int endScore;
 
-        defaultPlatformPosition = platform.localPosition;
+        private Vector3 defaultPlatformPosition;
+        private Vector3 defaultLeftBarrierRotation;
+        private Vector3 defaultRightBarrierRotation;
 
-        GameEventManager.Instance.OnReachedToCheckPoint.Register(() => StartCoroutine(WaitAndCallAction(1f, () => CheckScore())));
-        GameEventManager.Instance.OnSuccesfulyPlatformCleared.Register(() => ShowPocketAnimation());
-    }
+        #endregion
 
-    private void AddScore()
-    {
-        currentScore++;
-        countedObjectText.text = $"{currentScore} / {endScore}";
-    }
+        #region Unity Methods
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        CollectableObject collectableObject = collision.gameObject.GetComponent<CollectableObject>();
-
-        if (collectableObject != null)
+        private void OnCollisionEnter(Collision collision)
         {
-            collectableObject.Reset();
-            AddScore();
-        }
-    }
+            CollectableObject collectableObject = collision.gameObject.GetComponent<CollectableObject>();
 
-    private IEnumerator WaitAndCallAction(float waitTime, Action action)
-    {
-        yield return new WaitForSecondsRealtime(waitTime);
-        action();
-    }
-
-    private void CheckScore()
-    {
-        if (currentScore >= endScore)
-        {
-            ShowPocketAnimation();
-        }
-    }
-
-    public void ShowPocketAnimation()
-    {
-        platform.gameObject.SetActive(true);
-        Tweener lastAnimation;
-        Tweener platformAnimation = platform.DOMoveY(0, 1);
-        platformAnimation.OnComplete(
-            () =>
+            if (collectableObject != null)
             {
-                leftBarrier.DOLocalRotate(new Vector3(0, 0, 50), 1, RotateMode.WorldAxisAdd);
-                lastAnimation = rightBarrier.DOLocalRotate(new Vector3(0, 0, -50), 1, RotateMode.WorldAxisAdd);
+                collectableObject.Reset();
+                AddScore();
             }
-        );
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void Initialize(int endScore)
+        {
+            this.currentScore = 0;
+            this.endScore = endScore;
+            countedObjectText.text = $"{currentScore} / {endScore}";
+
+            defaultLeftBarrierRotation = leftBarrier.localEulerAngles;
+            defaultRightBarrierRotation = rightBarrier.localEulerAngles;
+
+            defaultPlatformPosition = platform.localPosition;
+
+            GameEventManager.Instance.OnReachedToCheckPoint.Register(() => StartCoroutine(WaitAndCallAction(1f, () => CheckScore())));
+            GameEventManager.Instance.OnSuccesfulyPlatformCleared.Register(() => ShowPocketAnimation());
+        }
+
+        public void ResetSetup()
+        {
+            checkpoint.gameObject.SetActive(true);
+            platform.gameObject.SetActive(false);
+            leftBarrier.localEulerAngles = defaultLeftBarrierRotation;
+            rightBarrier.localEulerAngles = defaultRightBarrierRotation;
+
+            platform.localPosition = defaultPlatformPosition;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddScore()
+        {
+            currentScore++;
+            countedObjectText.text = $"{currentScore} / {endScore}";
+        }
+
+
+        private IEnumerator WaitAndCallAction(float waitTime, Action action)
+        {
+            yield return new WaitForSecondsRealtime(waitTime);
+            action();
+        }
+
+        private void CheckScore()
+        {
+            if (currentScore >= endScore)
+            {
+                ShowPocketAnimation();
+            }
+        }
+
+        private void ShowPocketAnimation()
+        {
+            platform.gameObject.SetActive(true);
+            Tweener lastAnimation;
+            Tweener platformAnimation = platform.DOMoveY(0, 1);
+            platformAnimation.OnComplete(
+                () =>
+                {
+                    leftBarrier.DOLocalRotate(new Vector3(0, 0, 50), 1, RotateMode.WorldAxisAdd);
+                    lastAnimation = rightBarrier.DOLocalRotate(new Vector3(0, 0, -50), 1, RotateMode.WorldAxisAdd);
+                }
+            );
+        }
+
+        #endregion
     }
 }
