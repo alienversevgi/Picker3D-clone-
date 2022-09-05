@@ -58,42 +58,40 @@ public class LevelManager : MonoBehaviour
             platform.gameObject.SetActive(true);
             platform.Initialize(platformData);
             currentPlatforms.Add(platform);
-        }
 
-        for (int i = 0; i < currentLevelData.ObjectsData.Count; i++)
-        {
-            Platform currentPlatform = currentPlatforms[currentLevelData.ObjectsData[i].PlatformIndex];
-            CollectableObjectGroup collectableObjectGroup = poolManager.CollectableObjectGroupPool.Allocate();
-
-            collectableObjectGroup.gameObject.SetActive(true);
-            collectableObjectGroup.Initialize(currentLevelData.ObjectsData[i].Position, currentPlatform.transform);
-            currentPlatform.platformElements.Add(collectableObjectGroup);
-            currentCollectableObjectGroup.Add(collectableObjectGroup);
-
-            if (currentLevelData.ObjectsData[i].PresetData != null)
-                ApplyPresetToCollectableObject(currentLevelData.ObjectsData[i], collectableObjectGroup);
-        }
-
-        for (int i = 0; i < currentLevelData.HelicopterData.Count; i++)
-        {
-            Platform currentPlatform = currentPlatforms[currentLevelData.HelicopterData[i].PlatformIndex];
-            Helicopter helicopter = poolManager.HelicopterPools.Allocate();
-            Pool<CollectableObject> collectableObjectPool = poolManager.GetCollectableObjectPool(currentLevelData.HelicopterData[i].ObjectType);
-            List<CollectableObject> collectableObjects = new List<CollectableObject>();
-
-            foreach (PlatformObjectData objectData in currentLevelData.HelicopterData[i].ObjectData)
+            for (int i = 0; i < platformData.ObjectsData.Count; i++)
             {
-                CollectableObject collectableObject = collectableObjectPool.Allocate();
-                collectableObject.Initialize(Vector3.zero, ObjectType.Ball, currentPlatform.transform);
-                collectableObjects.Add(collectableObject);
+                CollectableObjectGroup collectableObjectGroup = poolManager.CollectableObjectGroupPool.Allocate();
+
+                collectableObjectGroup.gameObject.SetActive(true);
+                collectableObjectGroup.Initialize(platformData.ObjectsData[i].Position, platformData.ObjectsData[i].Rotation, platform.transform);
+                platform.platformElements.Add(collectableObjectGroup);
+                currentCollectableObjectGroup.Add(collectableObjectGroup);
+
+                if (platformData.ObjectsData[i].PresetData != null)
+                    ApplyPresetToCollectableObject(platformData.ObjectsData[i], collectableObjectGroup);
             }
 
-            currentPlatform.platformElements.AddRange(collectableObjects);
-            currentCollectableObjects.AddRange(collectableObjects);
-            helicopter.gameObject.SetActive(true);
-            helicopter.Initialize(collectableObjects, currentLevelData.HelicopterData[i], currentPlatform.transform);
-            currentHelicopters.Add(helicopter);
-            currentPlatform.platformElements.Add(helicopter);
+            for (int i = 0; i < platformData.HelicopterData.Count; i++)
+            {
+                Helicopter helicopter = poolManager.HelicopterPools.Allocate();
+                Pool<CollectableObject> collectableObjectPool = poolManager.GetCollectableObjectPool(platformData.HelicopterData[i].ObjectType);
+                List<CollectableObject> collectableObjects = new List<CollectableObject>();
+
+                for (int j = 0; j < platformData.HelicopterData[i].SpawnObjectCount; j++)
+                {
+                    CollectableObject collectableObject = collectableObjectPool.Allocate();
+                    collectableObject.Initialize(Vector3.zero, platformData.HelicopterData[i].ObjectType, platform.transform);
+                    collectableObjects.Add(collectableObject);
+                }
+
+                platform.platformElements.AddRange(collectableObjects);
+                currentCollectableObjects.AddRange(collectableObjects);
+                helicopter.gameObject.SetActive(true);
+                helicopter.Initialize(collectableObjects, platformData.HelicopterData[i], platform.transform);
+                currentHelicopters.Add(helicopter);
+                platform.platformElements.Add(helicopter);
+            }
         }
     }
 

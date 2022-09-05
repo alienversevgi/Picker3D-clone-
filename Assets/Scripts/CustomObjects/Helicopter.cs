@@ -21,8 +21,8 @@ public class Helicopter : MonoBehaviour, IResettable, IPlatformElement
     public void Initialize(List<CollectableObject> collectableObjects, CustomObjectData customObjectData, Transform parent)
     {
         firstParent = this.transform.parent;
+        this.transform.position = customObjectData.Position;
         this.transform.SetParent(parent);
-        this.transform.localPosition = customObjectData.Position;
         this.customObjectData = customObjectData;
         this.collectableObjects = collectableObjects;
         this.curvePoints = customObjectData.CurvePoints;
@@ -33,8 +33,8 @@ public class Helicopter : MonoBehaviour, IResettable, IPlatformElement
 
     public void Activate()
     {
-        Path path = new Path(PathType.Linear, curvePoints.ToArray(), 1);
-        this.transform.DOLocalPath(path, duration, PathMode.Full3D);
+        Path path = new Path(PathType.CubicBezier, curvePoints.ToArray(), 1);
+        this.transform.DOPath(path, duration, PathMode.Full3D);
         StartCoroutine(OverTimeCoroutine());
     }
 

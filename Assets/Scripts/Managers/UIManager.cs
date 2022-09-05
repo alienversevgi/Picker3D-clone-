@@ -19,12 +19,6 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-
-        float current = 0;
-        current = Time.frameCount / Time.time;
-        int avgFrameRate = (int)current;
-        CurrentLevelText.text = avgFrameRate.ToString() + " FPS";
-
         if (!isFirstInputDetected && Input.GetMouseButtonDown(0))
         {
             isFirstInputDetected = true;

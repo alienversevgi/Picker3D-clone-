@@ -14,15 +14,8 @@ public class PoolManager : MonoBehaviour
     public Pool<Platform> PlatformPool { get; private set; }
     public Pool<Helicopter> HelicopterPools { get; private set; }
     public Pool<CollectableObjectGroup> CollectableObjectGroupPool { get; private set; }
-
     public Pool<CollectableObject> BallPools { get; private set; }
     public Pool<CollectableObject> CubePools { get; private set; }
-
-    [Header("Current Level Objects")]
-    private List<Platform> currentPlatforms;
-    private List<CollectableObjectGroup> currentCollectableObjectGroup;
-    private List<CollectableObject> currentCollectableObjects;
-    private List<Helicopter> currentHelicopters;
 
     public void Initialize()
     {

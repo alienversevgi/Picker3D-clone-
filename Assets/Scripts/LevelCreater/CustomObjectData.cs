@@ -5,12 +5,12 @@ using UnityEngine;
 [Serializable]
 public class CustomObjectData
 {
-    public int PlatformIndex;
     public ObjectType ObjectType;
     public Vector3 Position;
     [SerializeField] public PresetData PresetData;
     public List<PlatformObjectData> ObjectData;
-    public ObjectSpawnType objectSpawnType;
+    public int SpawnObjectCount;
+    public ObjectSpawnType ObjectSpawnType;
     public float ObjectSpawnTime;
     public bool IsMoveableObject;
     public float Duration;

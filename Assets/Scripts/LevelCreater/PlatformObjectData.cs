@@ -20,8 +20,8 @@ public enum PresetShapeType
 [Serializable]
 public class PlatformObjectData
 {
-    public int PlatformIndex;
-    [SerializeField] public PresetData PresetData;
+    public PresetData PresetData;
     public ObjectType ObjectType;
     public Vector3 Position;
+    public Vector3 Rotation;
 }

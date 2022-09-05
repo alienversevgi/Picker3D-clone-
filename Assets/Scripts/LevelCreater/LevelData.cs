@@ -6,6 +6,4 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     public List<PlatformData> Platforms;
-    public List<PlatformObjectData> ObjectsData;
-    [SerializeField] public List<CustomObjectData> HelicopterData;
 }

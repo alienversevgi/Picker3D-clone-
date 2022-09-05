@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     {
         get 
         {
-            return PlayerPrefs.GetInt("CURRENT_LEVEL_INDEX", 1);
+            return PlayerPrefs.GetInt("CURRENT_LEVEL_INDEX", 0);
         }
         set 
         {
