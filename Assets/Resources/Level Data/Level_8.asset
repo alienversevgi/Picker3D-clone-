@@ -15,7 +15,7 @@ MonoBehaviour:
   Index: 8
   Platforms:
   - Index: 0
-    EndScore: 15
+    EndScore: 10
     Position: {x: 0, y: 0, z: 0}
     ObjectsData: []
     HelicopterData:
@@ -36,7 +36,7 @@ MonoBehaviour:
       - {x: -5, y: 3, z: 30}
       - {x: -5, y: 4, z: 30}
   - Index: 0
-    EndScore: 15
+    EndScore: 10
     Position: {x: 0, y: 0, z: 97}
     ObjectsData:
     - PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
@@ -62,7 +62,7 @@ MonoBehaviour:
     - PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
       ObjectType: 0
       Position: {x: 3.63, y: 0.58, z: -1.74}
-      Rotation: {x: 5.3931684, y: 109.631584, z: 0.9604343}
+      Rotation: {x: 5.3931684, y: 109.631584, z: 0.9604341}
     - PresetData: {fileID: 11400000, guid: 7b47758e4a4355a4587d77f2a5641a83, type: 2}
       ObjectType: 0
       Position: {x: 3.77, y: 0.551, z: 8.08}
