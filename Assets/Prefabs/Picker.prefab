@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493946ac5a0b98346bb56a66996e6a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 35
+  speed: 20
   pickerPool: {fileID: 2212999746467863508}
   camera: {fileID: 0}
 --- !u!1 &2212999745212810422
