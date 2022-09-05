@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game
 {
@@ -14,11 +15,8 @@ namespace Game
 
         [SerializeField] private PoolManager poolManager;
 
-        private const string LEVEL_PATH = "Level Data/";
-
         private List<LevelData> allLevelData;
         private LevelData currentLevelData;
-        private int levelIndex;
         private int platformIndex;
 
         [Header("Current Level Objects")]
@@ -26,6 +24,30 @@ namespace Game
         private List<CollectableObjectGroup> currentCollectableObjectGroup;
         private List<CollectableObject> currentCollectableObjects;
         private List<Helicopter> currentHelicopters;
+
+        public int CurrentLevelIndex
+        {
+            get
+            {
+                return PlayerPrefs.GetInt("CURRENT_LEVEL_INDEX", 0);
+            }
+            set
+            {
+                PlayerPrefs.SetInt("CURRENT_LEVEL_INDEX", value);
+            }
+        }
+
+        private bool areAllLevelCompleted
+        {
+            get
+            {
+                return PlayerPrefs.GetInt("ARE_ALL_LEVEL_COMPLETED", 0) == 1 ? true : false;
+            }
+            set
+            {
+                PlayerPrefs.SetInt("ARE_ALL_LEVEL_COMPLETED", value == true ? 1 : 0);
+            }
+        }
 
         #endregion
 
@@ -46,9 +68,12 @@ namespace Game
             currentCollectableObjectGroup.Clear();
         }
 
-        public void Initialize(int levelIndex, List<LevelData> levels)
+        public void Initialize()
         {
-            allLevelData = levels;
+            allLevelData = Resources.LoadAll<LevelData>("Level Data").OrderBy(it=>it.Index).ToList();
+
+            if (areAllLevelCompleted)
+                CurrentLevelIndex = Random.Range(0, allLevelData.Count);
 
             currentPlatforms = new List<Platform>();
             currentCollectableObjectGroup = new List<CollectableObjectGroup>();
@@ -56,10 +81,23 @@ namespace Game
             currentHelicopters = new List<Helicopter>();
         }
 
-        public void SetupLevel(int levelIndex)
+        public void IncrementLevel()
         {
-            this.levelIndex = levelIndex;
-            currentLevelData = allLevelData[levelIndex];
+            CurrentLevelIndex++;
+
+            if (areAllLevelCompleted)
+            {
+                CurrentLevelIndex = Random.Range(0, allLevelData.Count);
+            }
+            else if (CurrentLevelIndex == allLevelData.Count - 1)
+            {
+                areAllLevelCompleted = true;
+            }
+        }
+
+        public void LoadLevel()
+        {
+            currentLevelData = allLevelData[CurrentLevelIndex];
             currentPlatforms = new List<Platform>();
 
             foreach (PlatformData platformData in currentLevelData.Platforms)
