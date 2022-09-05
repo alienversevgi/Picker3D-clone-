@@ -3,34 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventManager : MonoBehaviour
+namespace Game
 {
-    #region Singelaton
-
-    private static GameEventManager instance;
-
-    public static GameEventManager Instance
+    public class GameEventManager : MonoBehaviour
     {
-        get
+        #region Singelaton
+
+        private static GameEventManager instance;
+
+        public static GameEventManager Instance
         {
-            if (instance == null)
+            get
             {
-                instance = GameObject.FindObjectOfType<GameEventManager>();
+                if (instance == null)
+                {
+                    instance = GameObject.FindObjectOfType<GameEventManager>();
+                }
+
+                return instance;
             }
-
-            return instance;
         }
-    }
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
 
-    #endregion
+        #endregion
 
-    public GameEvent OnReachedToCheckPoint;
-    public GameEvent OnSuccesfulyPlatformCleared; //Checkpointe ulaştım ama animsyon oynamadı
-    public GameEvent OnPlatformAnimationFinished;
-    public GameEvent OnPlatformFinished;
-    public GameEvent OnFirstInputDetected;
+        public GameEvent OnReachedToCheckPoint;
+        public GameEvent OnSuccesfulyPlatformCleared; 
+        public GameEvent OnPlatformAnimationFinished;
+        public GameEvent OnPlatformFinished;
+        public GameEvent OnFirstInputDetected;
+    }
 }

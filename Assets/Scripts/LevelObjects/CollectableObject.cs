@@ -1,45 +1,61 @@
+using Game.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectableObject : MonoBehaviour, IResettable, IPlatformElement
+namespace Game.Level
 {
-    public ObjectType ObjectType;
-    private Transform firstParent;
-    private Rigidbody rigidbody;
-
-    public void Reset()
+    public class CollectableObject : MonoBehaviour, IResettable, IPlatformElement
     {
-        rigidbody.isKinematic = true;
-        this.transform.SetParent(firstParent);
-        this.gameObject.SetActive(false);
-    }
+        #region Fields
 
-    public void Initialize(Vector3 position, ObjectType objectType, Transform parent)
-    {
-        this.ObjectType = objectType;
-        rigidbody = this.GetComponent<Rigidbody>();
-        firstParent = this.transform.parent;
-        this.transform.SetParent(parent);
-        this.transform.localPosition = position;
-    }
+        public ObjectType ObjectType;
+        private Transform firstParent;
+        private Rigidbody rigidbody;
 
-    public void Force(Vector3 direction, float force)
-    {
-        rigidbody.AddForce(direction * 5000f);
-    }
+        #endregion
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        PickerController picker = collision.gameObject.GetComponent<PickerController>();
-        if (picker != null)
+        #region Unity Methods
+
+        public void Reset()
         {
-            rigidbody.velocity = Vector3.forward * 200 * Time.deltaTime;
+            rigidbody.isKinematic = true;
+            this.transform.SetParent(firstParent);
+            this.gameObject.SetActive(false);
         }
-    }
 
-    public void Activate()
-    {
-        rigidbody.isKinematic = false;
+        private void OnCollisionEnter(Collision collision)
+        {
+            PickerController picker = collision.gameObject.GetComponent<PickerController>();
+            if (picker != null)
+            {
+                rigidbody.velocity = Vector3.forward * 200 * Time.deltaTime;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void Initialize(Vector3 position, ObjectType objectType, Transform parent)
+        {
+            this.ObjectType = objectType;
+            rigidbody = this.GetComponent<Rigidbody>();
+            firstParent = this.transform.parent;
+            this.transform.SetParent(parent);
+            this.transform.localPosition = position;
+        }
+
+        public void Force(Vector3 direction, float force)
+        {
+            rigidbody.AddForce(direction * 5000f);
+        }
+
+        public void Activate()
+        {
+            rigidbody.isKinematic = false;
+        }
+
+        #endregion
     }
 }

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPlatformElement 
+namespace Game.Level
 {
-    void Activate();
+    public interface IPlatformElement
+    {
+        void Activate();
+    }
 }

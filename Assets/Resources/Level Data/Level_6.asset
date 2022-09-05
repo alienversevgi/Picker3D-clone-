@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0909b99713c0164fad549efae44ccec, type: 3}
+  m_Name: Level_6
+  m_EditorClassIdentifier: 
+  Index: 6
+  Platforms:
+  - Index: 0
+    EndScore: 7
+    Position: {x: 0, y: 0, z: 0}
+    ObjectsData: []
+    HelicopterData:
+    - ObjectType: 0
+      Position: {x: 0, y: 4, z: -22}
+      PresetData: {fileID: 0}
+      ObjectData: []
+      SpawnObjectCount: 7
+      ObjectSpawnType: 1
+      ObjectSpawnTime: 0.2
+      IsMoveableObject: 0
+      Duration: 2
+      CurvePoints:
+      - {x: -1, y: 4, z: 25}
+      - {x: 0, y: 4, z: -22}
+      - {x: 6.25, y: 4, z: 0.4}
+  - Index: 0
+    EndScore: 13
+    Position: {x: 0, y: 0, z: 97}
+    ObjectsData:
+    - PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+      ObjectType: 1
+      Position: {x: 3.15, y: 0.551, z: 12.19}
+      Rotation: {x: -0, y: 27.073452, z: -0}
+    - PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+      ObjectType: 1
+      Position: {x: -1.95, y: 0.551, z: 12.83}
+      Rotation: {x: 0, y: 326.73315, z: 0}
+    - PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+      ObjectType: 1
+      Position: {x: 1.18, y: 1.18, z: -1.26}
+      Rotation: {x: 32.58222, y: 164.41635, z: 355.18445}
+    - PresetData: {fileID: 11400000, guid: fc5d82802d4dfa040a3035c295058bed, type: 2}
+      ObjectType: 1
+      Position: {x: -3.57, y: 0.551, z: 0}
+      Rotation: {x: 0, y: 221.19786, z: 0}
+    - PresetData: {fileID: 11400000, guid: 511d65749afa5a74d855581b9c5a7adc, type: 2}
+      ObjectType: 0
+      Position: {x: 0, y: 0.551, z: 5.03}
+      Rotation: {x: -0, y: 0, z: 0}
+    HelicopterData: []

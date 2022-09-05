@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New LevelData", menuName = "Level Data", order = 51)]
-public class LevelData : ScriptableObject
+namespace Game.Data
 {
-    public List<PlatformData> Platforms;
-    public List<PlatformObjectData> ObjectsData;
-    [SerializeField] public List<CustomObjectData> HelicopterData;
+    [CreateAssetMenu(fileName = "New LevelData", menuName = "Level Data", order = 51)]
+    public class LevelData : ScriptableObject
+    {
+        public int Index;
+        public List<PlatformData> Platforms;
+    }
 }
